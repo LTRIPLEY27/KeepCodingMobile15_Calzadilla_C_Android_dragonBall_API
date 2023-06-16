@@ -21,7 +21,9 @@ class HeroeListAdapter(private val callback: AdapterCallback) : RecyclerView.Ada
         fun take(hero : Heroe) {
             with(binding) {
                 heroName.text = hero.name
-                heroActuallLife.text = hero.actualLife.toString()
+                tvheroInitialLife.text = hero.actualLife.toString()
+                tvheroActuallLife.text = hero.actualLife.toString()
+                tvDescription.text = hero.description
                 Glide
                     .with(root)
                     .load(hero.photo)

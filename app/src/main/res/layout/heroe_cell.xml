@@ -23,50 +23,135 @@
         android:id="@+id/photo_heroe"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="15dp"
         android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/dragon_ball" />
 
     <TextView
         android:id="@+id/heroName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="@string/texto_prueba"
         android:fontFamily="@font/orange_juice"
         android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/orange"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/photo_heroe"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.134" />
 
-
-    <TextView
-        android:id="@+id/heroInitialLife"
-        android:layout_width="wrap_content"
+    <TableRow
+        android:id="@+id/tbRowOne"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/orange_juice"
-        android:text="initial points"
-        android:textSize="15sp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toEndOf="@id/photo_heroe"
-        app:layout_constraintTop_toBottomOf="@+id/heroName" />
+        app:layout_constraintTop_toBottomOf="@id/heroName">
+
+        <TextView
+            android:id="@+id/heroInitialLife"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/orange_juice"
+            android:text="@string/initial_points"
+            android:textStyle="bold"
+            android:textSize="15sp" />
 
 
-    <TextView
-        android:id="@+id/heroActuallLife"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tvheroInitialLife"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/orange_juice"
+            android:text="initial points"
+            android:textStyle="bold"
+            android:textColor="@color/orange"
+            android:textSize="15sp" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tbRowTwo"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/orange_juice"
-        android:text="initial points"
-        android:textSize="15sp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toEndOf="@id/heroInitialLife"
-        app:layout_constraintTop_toBottomOf="@+id/heroName" />
+        app:layout_constraintStart_toEndOf="@id/photo_heroe"
+        app:layout_constraintTop_toBottomOf="@id/tbRowOne">
+
+        <TextView
+            android:id="@+id/heroActuallLife"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:fontFamily="@font/orange_juice"
+            android:text="@string/actual_life"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/tvheroActuallLife"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/orange_juice"
+            android:text="initial points"
+            android:textStyle="bold"
+            android:textColor="@color/orange"
+            android:textSize="15sp" />
+
+    </TableRow>
+    <TableRow
+        android:id="@+id/tbRowThree"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/photo_heroe"
+        app:layout_constraintTop_toBottomOf="@id/tbRowTwo">
+
+        <TextView
+            android:id="@+id/heroDescription"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/orange_juice"
+            android:gravity="center"
+            android:text="Description"
+            android:textStyle="bold"
+            android:textSize="15sp"
+         />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tbRowFour"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/photo_heroe"
+        app:layout_constraintTop_toBottomOf="@id/tbRowThree">
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/orange_juice"
+            android:lines="4"
+            android:text="initial points"
+            android:textSize="12sp"
+            />
+
+    </TableRow>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

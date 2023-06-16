@@ -3,7 +3,8 @@ package com.example.dragonball_api_kc_android.heroelist.model
 data class Heroe (
     val name: String,
     val favorite : Boolean,
-    val photo : String
+    val photo : String,
+    val description : String
 ){
     var selected = false
     var maxLife : Int = 100

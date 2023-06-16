@@ -51,7 +51,7 @@ class HeroesListViewModel : ViewModel() {
                     .fromJson(response.body?.string(), Array<HeroeDTO>::class.java)
 
                 //SETTEAMOS LOS VALORES DEL MODEL QUE USAREMOS CON LOS OBTENIDOS DESDE LA API, MAPPEANDO LOS MISMOS
-                heroes.addAll(heroesDTO.map { Heroe(it.name, it.favorite, it.photo) })
+                heroes.addAll(heroesDTO.map { Heroe(it.name, it.favorite, it.photo, it.description) })
 
                 // INVOCAMOS AL OYENTE PARA QUE LLAME AL EVENTO
                 _uiState.value = HeroesState.HeroesList(heroes)
