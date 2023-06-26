@@ -1,4 +1,4 @@
-package com.example.dragonball_api_kc_android.login
+package com.example.dragonball_api_kc_android.model
 
 data class LoginDTO (
     var username : String,

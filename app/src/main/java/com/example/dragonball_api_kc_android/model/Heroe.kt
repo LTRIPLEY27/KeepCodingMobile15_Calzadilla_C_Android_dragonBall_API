@@ -1,4 +1,4 @@
-package com.example.dragonball_api_kc_android.heroelist.model
+package com.example.dragonball_api_kc_android.model
 
 data class Heroe (
     val name: String,

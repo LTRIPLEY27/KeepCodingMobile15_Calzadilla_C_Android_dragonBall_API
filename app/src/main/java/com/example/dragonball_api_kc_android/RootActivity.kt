@@ -1,6 +1,5 @@
 package com.example.dragonball_api_kc_android
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,10 +9,10 @@ import android.widget.Toast.LENGTH_LONG
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.dragonball_api_kc_android.databinding.ActivityLoginBinding
-import com.example.dragonball_api_kc_android.heroelist.HeroesActivity
-import com.example.dragonball_api_kc_android.heroelist.HeroesListViewModel
-import com.example.dragonball_api_kc_android.login.LoginDTO
-import com.example.dragonball_api_kc_android.login.LoginViewModel
+import com.example.dragonball_api_kc_android.ui.heroes_list.HeroesActivity
+import com.example.dragonball_api_kc_android.view_model.HeroesListViewModel
+import com.example.dragonball_api_kc_android.model.LoginDTO
+import com.example.dragonball_api_kc_android.view_model.LoginViewModel
 import com.example.dragonball_api_kc_android.persistence.UserDetails
 import kotlinx.coroutines.launch
 
@@ -67,7 +66,7 @@ class RootActivity : AppCompatActivity() {
                     is LoginViewModel.LoginState.OnTokenReceived -> {
                         UserDetails.checkToken(it.token, this@RootActivity)
                         Log.i("DETAILS", "SUCESS" + it.token)
-                        callHeroee()
+                        callHeroe()
                     }
                     is LoginViewModel.LoginState.Error -> {
                         Log.i("ERROR_LOGIN", "Hay un error de autenticación")
@@ -80,7 +79,7 @@ class RootActivity : AppCompatActivity() {
 
     }
 
-    fun callHeroee() {
+    private fun callHeroe() {
         val intent = Intent(this, HeroesActivity::class.java)
         startActivity(intent)
     }

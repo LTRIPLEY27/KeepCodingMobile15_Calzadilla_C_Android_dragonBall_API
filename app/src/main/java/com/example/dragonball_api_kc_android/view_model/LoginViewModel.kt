@@ -1,9 +1,9 @@
-package com.example.dragonball_api_kc_android.login
+package com.example.dragonball_api_kc_android.view_model
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dragonball_api_kc_android.persistence.UserDetails
+import com.example.dragonball_api_kc_android.model.LoginDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +23,7 @@ class LoginViewModel : ViewModel() {
     fun checkLogin(login: LoginDTO){
         viewModelScope.launch(Dispatchers.IO) {
             val client = OkHttpClient()
-            val url = "${BASE_URL}/api/auth/login"
+            val url = "$BASE_URL/api/auth/login"
             val loginKC = Credentials.basic(login.username, login.password)
             val body = FormBody.Builder()
                 .build()
@@ -46,38 +46,7 @@ class LoginViewModel : ViewModel() {
             Log.i("TOKEN", "TOKEN RECEIVED: " + _uiState.value)
         }
     }
-/*
-    // función para capturar todos los heroes
-    fun loadHeroes() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val client = OkHttpClient()
-            val url = "$URL/api/heros/all"
-            val body = FormBody.Builder()
-                .add("name", "")
-                .build()
-            val request = Request.Builder()
-                .url(url)
-                .addHeader(AUTHORIZATION, "Bearer $token")
-                .post(body)
-                .build()
-            val call = client.newCall(request)
-            val response = call.execute()
-            println(response.body)
 
-            response.body?.let { it ->
-                val gson = Gson()
-                try{
-                    val heroeDTOArray = gson.fromJson(it.toString(), Array<HeroeDTO>::class.java)
-                    _uiState.value = UiState.OnHeroListReceived(heroeDTOArray.toList().map { Heroe(it.name, it.favorite, it.photo) })
-                }
-                catch (ex: Exception) {
-                    _uiState.value = UiState.Error("Something went wrong in the request")
-                }
-            } ?: run { _uiState.value = UiState.Error("Something went wrong in the request") }
-
-        }
-    }
-*/
     /**
      *  DECLARACIÓN DE LAS DIFERENTES STATES DE LOGINSTATE PARA LA REACTIVIDAD
      */

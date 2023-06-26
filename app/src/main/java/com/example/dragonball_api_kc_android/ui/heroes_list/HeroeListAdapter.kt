@@ -1,13 +1,14 @@
 package com.example.dragonball_api_kc_android.heroelist
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.dragonball_api_kc_android.R
 import com.example.dragonball_api_kc_android.databinding.HeroeCellBinding
-import com.example.dragonball_api_kc_android.heroelist.model.Heroe
+import com.example.dragonball_api_kc_android.model.Heroe
 
 interface AdapterCallback {
     fun getHeroe(hero : Heroe)
@@ -34,6 +35,7 @@ class HeroeListAdapter(private val callback: AdapterCallback) : RecyclerView.Ada
                 // CAPTURA DEL HEROE
                 root.setOnClickListener {
                     callback.getHeroe(hero)
+                    Log.i("HEROE_CATCH", "EL HEROE ES $hero")
                 }
             }
         }

@@ -9,4 +9,8 @@
     <string name="texto_prueba">texto prueba</string>
     <string name="actual_life">Actual Life</string>
     <string name="initial_points">Initial Points</string>
+    <string name="curarse">Curar</string>
+    <string name="life">Estatus de Vida</string>
+    <string name="danyar">Dañar</string>
+    <string name="luchar">Luchar</string>
 </resources>

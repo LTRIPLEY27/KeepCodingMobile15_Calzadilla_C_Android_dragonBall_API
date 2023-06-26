@@ -1,10 +1,10 @@
-package com.example.dragonball_api_kc_android.heroelist
+package com.example.dragonball_api_kc_android.view_model
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dragonball_api_kc_android.heroelist.model.Heroe
-import com.example.dragonball_api_kc_android.heroelist.model.HeroeDTO
+import com.example.dragonball_api_kc_android.model.Heroe
+import com.example.dragonball_api_kc_android.model.HeroeDTO
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import kotlin.random.Random
 
 class HeroesListViewModel : ViewModel() {
 
@@ -32,7 +33,7 @@ class HeroesListViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             val client = OkHttpClient()
-            val url = "${BASE_URL}/api/heros/all"
+            val url = "$BASE_URL/api/heros/all"
             val formBody = FormBody.Builder()
                 .add("name", "")
                 .build()
@@ -73,9 +74,24 @@ class HeroesListViewModel : ViewModel() {
        }
        heroe.selected = true
        _uiState.value = HeroesState.HeroeDetail(heroe)
-       _uiState.value = HeroesState.Idle
+       //_uiState.value = HeroesState.Idle
        _uiStateDetail.value = HeroeDetailState.HeroeDetail(heroe)
+
+        Log.i("HEROES_HERE", "Listado de heroes  VAAVIO" + _uiState.value)
+        Log.i("HEROES_DETAILER", "DETALLE" + _uiStateDetail.value)
    }
+
+    fun getDamage(heroe: Heroe) : Heroe {
+        heroe.actualLife = (10..60).shuffled().first()
+
+        return heroe
+    }
+
+    fun getHealth(heroe: Heroe) : Heroe {
+        heroe.actualLife += 20
+
+        return heroe
+    }
 
     /**
      *  ESTADOS A RETORNAR SEGÚN EL STATE
@@ -88,6 +104,7 @@ class HeroesListViewModel : ViewModel() {
         object UpdateList : HeroesState()
         object Idle : HeroesState()
     }
+
 
     /**
      *  MOTIVADO A QUE EL DETAIL ESTÁ ENGANCHADO DEL LIST, INVOCAREMOS AL STATE DESDE ACÁ PARA CAPTURAR EL EVENTO

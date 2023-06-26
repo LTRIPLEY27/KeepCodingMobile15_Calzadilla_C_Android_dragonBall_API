@@ -16,7 +16,7 @@
         android:theme="@style/Theme.DragonBall_API_KC_Android"
         tools:targetApi="31">
         <activity
-            android:name=".heroelist.HeroesActivity"
+            android:name=".ui.heroes_list.HeroesActivity"
             android:exported="false" />
         <activity
             android:name=".RootActivity"
