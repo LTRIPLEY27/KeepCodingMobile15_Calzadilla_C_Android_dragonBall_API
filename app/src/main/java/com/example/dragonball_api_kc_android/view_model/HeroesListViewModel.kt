@@ -1,6 +1,8 @@
 package com.example.dragonball_api_kc_android.view_model
 
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dragonball_api_kc_android.model.Heroe
@@ -17,8 +19,6 @@ import kotlin.random.Random
 
 class HeroesListViewModel : ViewModel() {
 
-    //private lateinit var viewModelLogin : LoginViewModel
-
     private val _uiState = MutableStateFlow<HeroesState>(HeroesState.Idle)
     val uiState : StateFlow<HeroesState> = _uiState
 
@@ -31,6 +31,9 @@ class HeroesListViewModel : ViewModel() {
     fun downloadHeroes(token : String) {
         Log.i("TOKEN_RECEIVED", "EL TOKEN ACÁ ES  $token")
 
+        if(heroes.isNotEmpty()) {
+            _uiState.value = HeroesState.HeroesList(heroes)
+        }
         viewModelScope.launch(Dispatchers.IO) {
             val client = OkHttpClient()
             val url = "$BASE_URL/api/heros/all"
@@ -74,23 +77,47 @@ class HeroesListViewModel : ViewModel() {
        }
        heroe.selected = true
        _uiState.value = HeroesState.HeroeDetail(heroe)
-       //_uiState.value = HeroesState.Idle
        _uiStateDetail.value = HeroeDetailState.HeroeDetail(heroe)
 
         Log.i("HEROES_HERE", "Listado de heroes  VAAVIO" + _uiState.value)
         Log.i("HEROES_DETAILER", "DETALLE" + _uiStateDetail.value)
    }
 
-    fun getDamage(heroe: Heroe) : Heroe {
-        heroe.actualLife = (10..60).shuffled().first()
+    // PASAMOS EL VALOR AL DETAIL DESDE LA FUNCIÓN
+    //fun getDamage(heroe: Heroe) : Heroe {  // no funciona reenviando un heroe, ya que no se aplica la reactividad del flow y por ello daba error
+    fun getDamage(heroe: Heroe)  {
+        heroes.firstOrNull() {
+            it.selected
+        } ?.let {
+            it.getDamage()
+            _uiStateDetail.value = HeroeDetailState.HeroUpdate(heroe)
+        }
 
-        return heroe
+        /*
+        var damage = (10..60).shuffled().first()
+        if(heroe.actualLife > damage){
+            heroe.actualLife = damage
+        } else {
+            heroe.actualLife = 0
+        }*/
+
+       // return heroe
     }
 
-    fun getHealth(heroe: Heroe) : Heroe {
-        heroe.actualLife += 20
+    fun getHealth(heroe: Heroe) {
+        heroes.firstOrNull() {
+            it.selected
+        } ?.let {
+            it.getHealth()
+            _uiStateDetail.value = HeroeDetailState.HeroUpdate(heroe)
+        }
+    }
 
-        return heroe
+    //********************
+    fun setHeros(heros : List<Heroe>) {
+        heroes.clear()
+        heroes.addAll(heros)
+        _uiState.value = HeroesState.HeroesList(heros)
     }
 
     /**
@@ -111,8 +138,8 @@ class HeroesListViewModel : ViewModel() {
      */
     sealed class HeroeDetailState{
         data class HeroeDetail(val heroe : Heroe) : HeroeDetailState()
-        data class HeroeUpdate(val heroe : Heroe) : HeroeDetailState()
         data class Error(val message : String) : HeroeDetailState()
+        data class HeroUpdate(val heroe : Heroe) : HeroeDetailState()
         object Idle : HeroeDetailState()
     }
 

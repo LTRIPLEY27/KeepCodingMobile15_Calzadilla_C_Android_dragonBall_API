@@ -55,7 +55,6 @@ class LoginViewModel : ViewModel() {
         data class Error(val error : String) : LoginState()
         data class OnTokenReceived(val token : String) : LoginState()
 
-        //data class OnHeroListReceived(val heroes : List<Heroe>) : LoginState()
     }
 
     companion object {

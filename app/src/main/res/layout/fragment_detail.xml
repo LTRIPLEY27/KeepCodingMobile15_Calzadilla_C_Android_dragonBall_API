@@ -175,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:max="100"
-                    android:progress="40"
+                    android:progress="100"
                     >
 
                 </SeekBar>

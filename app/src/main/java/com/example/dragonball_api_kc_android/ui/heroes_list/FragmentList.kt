@@ -18,6 +18,7 @@ import com.example.dragonball_api_kc_android.heroelist.HeroeListAdapter
 import com.example.dragonball_api_kc_android.model.Heroe
 import com.example.dragonball_api_kc_android.persistence.UserDetails
 import com.example.dragonball_api_kc_android.view_model.HeroesListViewModel
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -71,6 +72,7 @@ class FragmentList : Fragment(), AdapterCallback {
                 when(it) {
                     is HeroesListViewModel.HeroesState.HeroesList -> {
                         showHeroes(it.heroes)
+                        chargeOnLocal(it.heroes)
                         Log.i("LISTA_HEROES", it.heroes.toString())
                     }
                     is HeroesListViewModel.HeroesState.HeroeDetail-> {
@@ -98,16 +100,32 @@ class FragmentList : Fragment(), AdapterCallback {
         adapter.updateList(heroes)
     }
 
+    // ALMACENA EN LOCAL LA LISTA  RECIBIDA DESERIALIZANDO EL JSON
+    private fun chargeOnLocal(heroes : List<Heroe>){
+        activity?.getPreferences(Context.MODE_PRIVATE)?.let {
+            it.edit()
+                .putString(HEROES_ON_LOCAL, Gson().toJson(heroes))
+            it.edit()
+        }
+    }
+
     private fun loadHeroes() {
         activity?.getPreferences(Context.MODE_PRIVATE)?.let {
             try {
-                UserDetails.callToken(requireContext())?.let {
-                    viewModel.downloadHeroes(it)
-                }
+                val response = it.getString(HEROES_ON_LOCAL, "")
+                val getHeroes : Array<Heroe> = Gson().fromJson(response, Array<Heroe>::class.java)
+                viewModel.setHeros(getHeroes.toList())
             }
             catch (_: Exception) {
+                UserDetails.callToken(requireContext())?.let { withToken ->
+                    viewModel.downloadHeroes(withToken)
+                }
                 Log.i("ERROR_TOKEN", "Error en el token ")
             }
         }
+    }
+
+    companion object {
+        const val HEROES_ON_LOCAL = "HEROES_LOCAL"
     }
 }

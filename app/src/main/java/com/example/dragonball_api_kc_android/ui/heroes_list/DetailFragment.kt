@@ -1,5 +1,6 @@
 package com.example.dragonball_api_kc_android.ui.heroes_list
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -37,7 +38,6 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
-        setListeners()
     }
 
     // los observadores serán los que capturaran la reactividad y dispararán el evento, por ello se debe de definir el estate en ésta función
@@ -60,7 +60,8 @@ class DetailFragment : Fragment() {
         with(detailBinding){
             tvDetailTitle.text = heroe.name
             tvLife.text = heroe.maxLife.toString()
-            tvDetailheroActualLife.text = 100.toString()//heroe.actualLife.toString()
+            tvDetailheroActualLife.text = heroe.actualLife.toString()
+            sbLive.progress = heroe.actualLife
             Glide
                 .with(root)
                 .load(heroe.photo)
@@ -71,16 +72,18 @@ class DetailFragment : Fragment() {
             btCurarse.setOnClickListener {
                 var her = viewModel.getHealth(heroe)
                 sbLive.progress = her.actualLife
+                tvDetailheroActualLife.text = sbLive.progress.toString()
+
             }
 
             btDamage.setOnClickListener {
                 var her = viewModel.getDamage(heroe)
                 sbLive.progress = her.actualLife
+                tvDetailheroActualLife.text = sbLive.progress.toString()
+
             }
         }
     }
 
-    private fun setListeners() {
 
-    }
 }
