@@ -31,40 +31,45 @@ class HeroesListViewModel : ViewModel() {
     fun downloadHeroes(token : String) {
         Log.i("TOKEN_RECEIVED", "EL TOKEN ACÁ ES  $token")
 
-        if(heroes.isNotEmpty()) {
-            _uiState.value = HeroesState.HeroesList(heroes)
-        }
         viewModelScope.launch(Dispatchers.IO) {
-            val client = OkHttpClient()
-            val url = "$BASE_URL/api/heros/all"
-            val formBody = FormBody.Builder()
-                .add("name", "")
-                .build()
-            val request = Request.Builder()
-                .url(url)
-                .post(formBody)
-                .addHeader(AUTHORIZATION, "Bearer $token")
-                .build()
-            val call = client.newCall(request)
+            if(heroes.isEmpty()) {
+                val client = OkHttpClient()
+                val url = "$BASE_URL/api/heros/all"
+                val formBody = FormBody.Builder()
+                    .add("name", "")
+                    .build()
+                val request = Request.Builder()
+                    .url(url)
+                    .post(formBody)
+                    .addHeader(AUTHORIZATION, "Bearer $token")
+                    .build()
+                val call = client.newCall(request)
 
-            val response = call.execute()
+                val response = call.execute()
 
-            if(response.isSuccessful) {
-                // si la respuesta ocurre, Deseriarizamos el objeto
-                val heroesDTO : Array<HeroeDTO> = Gson()
-                    .fromJson(response.body?.string(), Array<HeroeDTO>::class.java)
+                if(response.isSuccessful) {
+                    // si la respuesta ocurre, Deseriarizamos el objeto
+                    val heroesDTO : Array<HeroeDTO> = Gson()
+                        .fromJson(response.body?.string(), Array<HeroeDTO>::class.java)
 
-                //SETTEAMOS LOS VALORES DEL MODEL QUE USAREMOS CON LOS OBTENIDOS DESDE LA API, MAPPEANDO LOS MISMOS
-                heroes.addAll(heroesDTO.map { Heroe(it.name, it.favorite, it.photo, it.description) })
+                    //SETTEAMOS LOS VALORES DEL MODEL QUE USAREMOS CON LOS OBTENIDOS DESDE LA API, MAPPEANDO LOS MISMOS
+                    //heroes.clear()
+                    heroes.addAll(heroesDTO.map { Heroe(it.name, it.favorite, it.photo, it.description) })
 
-                // INVOCAMOS AL OYENTE PARA QUE LLAME AL EVENTO
-                _uiState.value = HeroesState.HeroesList(heroes)
-                Log.i("HEROES", "Listado de heroes " + _uiState.value)
-            } else {
-                _uiState.value = HeroesState.Error(response.message)
-                Log.i("HEROES_EMPTY", "Listado de heroes  VAAVIO" + _uiState.value)
+                    // INVOCAMOS AL OYENTE PARA QUE LLAME AL EVENTO
+                    _uiState.value = HeroesState.HeroesList(heroes)
+                    Log.i("HEROES", "Listado de heroes " + _uiState.value)
+                    Log.i("HEROES2", "Listado de heroes $heroes")
+                } else {
+                    _uiState.value = HeroesState.Error(response.message)
+                    Log.i("HEROES_EMPTY", "Listado de heroes  VAAVIO" + _uiState.value)
 
+                }
             }
+            else {
+                _uiState.value = HeroesState.HeroesList(heroes)
+            }
+
         }
     }
 
@@ -85,13 +90,18 @@ class HeroesListViewModel : ViewModel() {
 
     // PASAMOS EL VALOR AL DETAIL DESDE LA FUNCIÓN
     //fun getDamage(heroe: Heroe) : Heroe {  // no funciona reenviando un heroe, ya que no se aplica la reactividad del flow y por ello daba error
-    fun getDamage(heroe: Heroe)  {
-        heroes.firstOrNull() {
+    fun getDamage(heroe: Heroe) : Heroe {
+       /* heroes.firstOrNull() {
             it.selected
         } ?.let {
             it.getDamage()
-            _uiStateDetail.value = HeroeDetailState.HeroUpdate(heroe)
-        }
+            _uiStateDetail.value = HeroeDetailState.HeroUpdate(it)
+            Log.i("HEROES_UPDATE_DAMAGE", "UPDATE" + _uiStateDetail.value)
+        }*/
+
+        heroe.getDamage()
+        _uiStateDetail.value = HeroeDetailState.HeroUpdate(heroe)
+        Log.i("HEROES_UPDATE_DAMAGE", "UPDATE" + _uiStateDetail.value)
 
         /*
         var damage = (10..60).shuffled().first()
@@ -101,25 +111,27 @@ class HeroesListViewModel : ViewModel() {
             heroe.actualLife = 0
         }*/
 
-       // return heroe
+        return heroe
     }
 
-    fun getHealth(heroe: Heroe) {
+    fun getHealth() {
         heroes.firstOrNull() {
             it.selected
         } ?.let {
             it.getHealth()
-            _uiStateDetail.value = HeroeDetailState.HeroUpdate(heroe)
+            _uiStateDetail.value = HeroeDetailState.HeroUpdate(it)
+            Log.i("HEROES_UPDATE", "UPDATE" + _uiStateDetail.value)
         }
     }
 
     //********************
-    fun setHeros(heros : List<Heroe>) {
+
+    fun setHeros(heros: List<Heroe>){
         heroes.clear()
         heroes.addAll(heros)
-        _uiState.value = HeroesState.HeroesList(heros)
+        _uiState.value = HeroesState.HeroesList(heroes)
+        Log.i("HEROES_LIST", "UPDATE" + HeroesState.HeroesList(heroes))
     }
-
     /**
      *  ESTADOS A RETORNAR SEGÚN EL STATE
      */

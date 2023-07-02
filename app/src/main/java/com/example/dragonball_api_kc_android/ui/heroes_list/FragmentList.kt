@@ -1,5 +1,6 @@
 package com.example.dragonball_api_kc_android.ui.heroes_list
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -66,6 +67,12 @@ class FragmentList : Fragment(), AdapterCallback {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResume() {
+        super.onResume()
+        adapter.notifyDataSetChanged()
+    }
+    @SuppressLint("NotifyDataSetChanged")
     private fun setObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect {
@@ -78,6 +85,9 @@ class FragmentList : Fragment(), AdapterCallback {
                     is HeroesListViewModel.HeroesState.HeroeDetail-> {
                         getDetail(it.hero)
                         Log.i("HEROE_DETAIL_CALLA", " $it.hero")
+                    }
+                    is HeroesListViewModel.HeroesState.UpdateList -> {
+                        adapter.notifyDataSetChanged()
                     }
                     else -> {}
                 }
@@ -115,6 +125,7 @@ class FragmentList : Fragment(), AdapterCallback {
                 val response = it.getString(HEROES_ON_LOCAL, "")
                 val getHeroes : Array<Heroe> = Gson().fromJson(response, Array<Heroe>::class.java)
                 viewModel.setHeros(getHeroes.toList())
+
             }
             catch (_: Exception) {
                 UserDetails.callToken(requireContext())?.let { withToken ->

@@ -38,7 +38,28 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
+        //setListeners()
     }
+
+    /*
+    private fun setListeners() {
+        detailBinding.btCurarse.setOnClickListener {
+            //var her = viewModel.getHealth(heroe)
+            //sbLive.progress = her.actualLife
+            //tvDetailheroActualLife.text = sbLive.progress.toString()
+
+            viewModel.getHealth()
+            Log.i("HEROES_UPDATE_ACA", "UPDATE" + viewModel.getHealth())
+        }
+
+        detailBinding.btDamage.setOnClickListener {
+            /*var her = viewModel.getDamage(heroe)
+            sbLive.progress = her.actualLife
+            tvDetailheroActualLife.text = sbLive.progress.toString()*/
+            //viewModel.getDamage()
+           // Log.i("HEROES_UPDATE_DAMAGE", "UPDATE" + viewModel.getDamage())
+        }
+    }*/
 
     // los observadores serán los que capturaran la reactividad y dispararán el evento, por ello se debe de definir el estate en ésta función
     // EL OBSERVADOR DEBE DE APUNTAR A LA SEALED CLASS
@@ -48,6 +69,10 @@ class DetailFragment : Fragment() {
                 when(it) {
                     is HeroesListViewModel.HeroeDetailState.HeroeDetail -> {
                         Log.i("DETAIL", "EL HEROE DETALLE ES ${it.heroe}")
+                        printDetail(it.heroe)
+                    }
+                    is HeroesListViewModel.HeroeDetailState.HeroUpdate -> {
+                        Log.i("UPDATER", "EL HEROE DETALLE ES ${it.heroe}")
                         printDetail(it.heroe)
                     }
                     else -> {}
@@ -69,18 +94,22 @@ class DetailFragment : Fragment() {
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(detailphotoHeroe)
 
-            btCurarse.setOnClickListener {
-                var her = viewModel.getHealth(heroe)
-                sbLive.progress = her.actualLife
-                tvDetailheroActualLife.text = sbLive.progress.toString()
 
+            detailBinding.btCurarse.setOnClickListener {
+                //var her = viewModel.getHealth(heroe)
+                //sbLive.progress = her.actualLife
+                //tvDetailheroActualLife.text = sbLive.progress.toString()
+
+                viewModel.getHealth()
+                Log.i("HEROES_UPDATE_ACA", "UPDATE" + viewModel.getHealth())
             }
 
-            btDamage.setOnClickListener {
-                var her = viewModel.getDamage(heroe)
+            detailBinding.btDamage.setOnClickListener {
+                /*var her = viewModel.getDamage(heroe)
                 sbLive.progress = her.actualLife
-                tvDetailheroActualLife.text = sbLive.progress.toString()
-
+                tvDetailheroActualLife.text = sbLive.progress.toString()*/
+                viewModel.getDamage(heroe)
+                Log.i("HEROES_UPDATE_DAMAGE", "UPDATE" + viewModel.getDamage(heroe))
             }
         }
     }
