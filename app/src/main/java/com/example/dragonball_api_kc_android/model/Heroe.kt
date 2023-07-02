@@ -12,12 +12,4 @@ data class Heroe (
 ){
     var selected = false
 
-    fun getDamage(){
-        actualLife -= (10..60).shuffled().first()
-    }
-
-    fun getHealth(){
-        actualLife += 20
-    }
-
 }

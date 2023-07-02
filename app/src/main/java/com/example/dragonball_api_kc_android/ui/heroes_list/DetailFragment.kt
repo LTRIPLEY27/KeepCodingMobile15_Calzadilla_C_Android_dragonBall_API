@@ -38,28 +38,8 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
-        //setListeners()
     }
 
-    /*
-    private fun setListeners() {
-        detailBinding.btCurarse.setOnClickListener {
-            //var her = viewModel.getHealth(heroe)
-            //sbLive.progress = her.actualLife
-            //tvDetailheroActualLife.text = sbLive.progress.toString()
-
-            viewModel.getHealth()
-            Log.i("HEROES_UPDATE_ACA", "UPDATE" + viewModel.getHealth())
-        }
-
-        detailBinding.btDamage.setOnClickListener {
-            /*var her = viewModel.getDamage(heroe)
-            sbLive.progress = her.actualLife
-            tvDetailheroActualLife.text = sbLive.progress.toString()*/
-            //viewModel.getDamage()
-           // Log.i("HEROES_UPDATE_DAMAGE", "UPDATE" + viewModel.getDamage())
-        }
-    }*/
 
     // los observadores serán los que capturaran la reactividad y dispararán el evento, por ello se debe de definir el estate en ésta función
     // EL OBSERVADOR DEBE DE APUNTAR A LA SEALED CLASS
@@ -74,6 +54,7 @@ class DetailFragment : Fragment() {
                     is HeroesListViewModel.HeroeDetailState.HeroUpdate -> {
                         Log.i("UPDATER", "EL HEROE DETALLE ES ${it.heroe}")
                         printDetail(it.heroe)
+                        parentFragmentManager.popBackStack()
                     }
                     else -> {}
                 }
@@ -95,21 +76,24 @@ class DetailFragment : Fragment() {
                 .into(detailphotoHeroe)
 
 
-            detailBinding.btCurarse.setOnClickListener {
-                //var her = viewModel.getHealth(heroe)
-                //sbLive.progress = her.actualLife
-                //tvDetailheroActualLife.text = sbLive.progress.toString()
-
-                viewModel.getHealth()
-                Log.i("HEROES_UPDATE_ACA", "UPDATE" + viewModel.getHealth())
+            btCurarse.setOnClickListener {
+                var her = viewModel.getHealth(heroe)
+                sbLive.progress = her.actualLife
+                tvDetailheroActualLife.text = sbLive.progress.toString()
+                Log.i("HEROES_UPDATE_ACA", "UPDATE" + viewModel.getHealth(heroe))
             }
 
-            detailBinding.btDamage.setOnClickListener {
-                /*var her = viewModel.getDamage(heroe)
+            btDamage.setOnClickListener {
+                var her = viewModel.getDamage(heroe)
                 sbLive.progress = her.actualLife
-                tvDetailheroActualLife.text = sbLive.progress.toString()*/
-                viewModel.getDamage(heroe)
+                tvDetailheroActualLife.text = sbLive.progress.toString()
                 Log.i("HEROES_UPDATE_DAMAGE", "UPDATE" + viewModel.getDamage(heroe))
+
+                if(sbLive.progress == 0) {
+                    detailphotoHeroe.alpha = 0F
+                }else {
+                    detailphotoHeroe.alpha = 1F
+                }
             }
         }
     }

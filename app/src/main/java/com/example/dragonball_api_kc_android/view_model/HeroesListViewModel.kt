@@ -53,7 +53,6 @@ class HeroesListViewModel : ViewModel() {
                         .fromJson(response.body?.string(), Array<HeroeDTO>::class.java)
 
                     //SETTEAMOS LOS VALORES DEL MODEL QUE USAREMOS CON LOS OBTENIDOS DESDE LA API, MAPPEANDO LOS MISMOS
-                    //heroes.clear()
                     heroes.addAll(heroesDTO.map { Heroe(it.name, it.favorite, it.photo, it.description) })
 
                     // INVOCAMOS AL OYENTE PARA QUE LLAME AL EVENTO
@@ -91,37 +90,22 @@ class HeroesListViewModel : ViewModel() {
     // PASAMOS EL VALOR AL DETAIL DESDE LA FUNCIÓN
     //fun getDamage(heroe: Heroe) : Heroe {  // no funciona reenviando un heroe, ya que no se aplica la reactividad del flow y por ello daba error
     fun getDamage(heroe: Heroe) : Heroe {
-       /* heroes.firstOrNull() {
-            it.selected
-        } ?.let {
-            it.getDamage()
-            _uiStateDetail.value = HeroeDetailState.HeroUpdate(it)
-            Log.i("HEROES_UPDATE_DAMAGE", "UPDATE" + _uiStateDetail.value)
-        }*/
 
-        heroe.getDamage()
-        _uiStateDetail.value = HeroeDetailState.HeroUpdate(heroe)
-        Log.i("HEROES_UPDATE_DAMAGE", "UPDATE" + _uiStateDetail.value)
-
-        /*
         var damage = (10..60).shuffled().first()
         if(heroe.actualLife > damage){
             heroe.actualLife = damage
         } else {
             heroe.actualLife = 0
-        }*/
+        }
 
         return heroe
     }
 
-    fun getHealth() {
-        heroes.firstOrNull() {
-            it.selected
-        } ?.let {
-            it.getHealth()
-            _uiStateDetail.value = HeroeDetailState.HeroUpdate(it)
-            Log.i("HEROES_UPDATE", "UPDATE" + _uiStateDetail.value)
-        }
+    fun getHealth(heroe: Heroe) : Heroe {
+
+        heroe.actualLife += 20
+
+        return heroe
     }
 
     //********************
