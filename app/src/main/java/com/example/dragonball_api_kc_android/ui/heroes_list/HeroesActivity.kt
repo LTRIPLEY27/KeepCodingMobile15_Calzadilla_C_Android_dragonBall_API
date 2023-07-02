@@ -34,6 +34,7 @@ class HeroesActivity : AppCompatActivity() {
         // SE LE DEBE DE INDICAR EL ID DEL CONTAINERFRAGMENT Y LA ACTIVITY DEL FRACGMENT A INSERTAR
         supportFragmentManager.beginTransaction()
             .replace(heroeList.frContainer .id, DetailFragment())
+            .addToBackStack(null)
             .commit()
 
     }

@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.dragonball_api_kc_android.R
 import com.example.dragonball_api_kc_android.databinding.FragmentDetailBinding
+import com.example.dragonball_api_kc_android.databinding.HeroeCellBinding
 import com.example.dragonball_api_kc_android.model.Heroe
 import com.example.dragonball_api_kc_android.view_model.HeroesListViewModel
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 class DetailFragment : Fragment() {
 
     private lateinit var detailBinding : FragmentDetailBinding
+    private lateinit var cellBinding : HeroeCellBinding
 
     // implementamos el viewmodel cojunto para capturar los eventos
     private val viewModel : HeroesListViewModel by activityViewModels()
@@ -52,9 +54,7 @@ class DetailFragment : Fragment() {
                         printDetail(it.heroe)
                     }
                     is HeroesListViewModel.HeroeDetailState.HeroUpdate -> {
-                        Log.i("UPDATER", "EL HEROE DETALLE ES ${it.heroe}")
                         printDetail(it.heroe)
-                        parentFragmentManager.popBackStack()
                     }
                     else -> {}
                 }
@@ -80,17 +80,16 @@ class DetailFragment : Fragment() {
                 var her = viewModel.getHealth(heroe)
                 sbLive.progress = her.actualLife
                 tvDetailheroActualLife.text = sbLive.progress.toString()
-                Log.i("HEROES_UPDATE_ACA", "UPDATE" + viewModel.getHealth(heroe))
             }
 
             btDamage.setOnClickListener {
                 var her = viewModel.getDamage(heroe)
                 sbLive.progress = her.actualLife
                 tvDetailheroActualLife.text = sbLive.progress.toString()
-                Log.i("HEROES_UPDATE_DAMAGE", "UPDATE" + viewModel.getDamage(heroe))
 
                 if(sbLive.progress == 0) {
                     detailphotoHeroe.alpha = 0F
+                    parentFragmentManager.popBackStack()
                 }else {
                     detailphotoHeroe.alpha = 1F
                 }

@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.dragonball_api_kc_android.R
+import com.example.dragonball_api_kc_android.databinding.FragmentDetailBinding
 import com.example.dragonball_api_kc_android.databinding.HeroeCellBinding
 import com.example.dragonball_api_kc_android.model.Heroe
 
@@ -19,10 +21,17 @@ class HeroeListAdapter(private val callback: AdapterCallback) : RecyclerView.Ada
     private var heroesList = listOf<Heroe>()
 
     inner class MainViewHolder(private val binding : HeroeCellBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun take(hero : Heroe) {
             with(binding) {
                 heroName.text = hero.name
                 tvheroInitialLife.text = hero.actualLife.toString()
+
+                if(hero.actualLife == 0){
+                    R.color.white
+                    root.setBackgroundColor(ContextCompat.getColor(root.context, R.color.white))
+                }
+
                 tvheroActuallLife.text = hero.actualLife.toString()
                 tvDescription.text = hero.description
                 Glide
